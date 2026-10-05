@@ -16,6 +16,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -37,6 +39,72 @@ type Broadcaster struct {
 	Port     int           // discovery UDP port
 	Interval time.Duration // how often to beacon (default 2s)
 	Beacon   Beacon
+}
+
+// Probe sends the beacon directly (unicast) to each given address a few times.
+// This is the manual "search by IP" fallback for networks where broadcast is
+// blocked (e.g. Wi-Fi client isolation): the targeted client still receives the
+// beacon on the discovery port and connects back to the server. ips may contain
+// single addresses ("192.168.1.20") or last-octet ranges ("192.168.1.10-40").
+func Probe(port int, ips []string, beacon Beacon) {
+	targets := expandIPs(ips)
+	if len(targets) == 0 {
+		return
+	}
+	conn, err := net.ListenUDP("udp4", &net.UDPAddr{IP: net.IPv4zero, Port: 0})
+	if err != nil {
+		return
+	}
+	defer conn.Close()
+	beacon.Magic = Magic
+	beacon.Host = primaryIPv4()
+	data, err := json.Marshal(beacon)
+	if err != nil {
+		return
+	}
+	// Send a short burst so a momentarily-busy client still catches one.
+	for round := 0; round < 4; round++ {
+		for _, ip := range targets {
+			_, _ = conn.WriteToUDP(data, &net.UDPAddr{IP: ip, Port: port})
+		}
+		time.Sleep(400 * time.Millisecond)
+	}
+}
+
+// expandIPs parses a list of tokens into concrete IPv4 addresses. Each token is
+// a single IPv4 or a last-octet range "a.b.c.X-Y".
+func expandIPs(tokens []string) []net.IP {
+	var out []net.IP
+	for _, tok := range tokens {
+		tok = strings.TrimSpace(tok)
+		if tok == "" {
+			continue
+		}
+		if i := strings.IndexByte(tok, '-'); i >= 0 {
+			base := tok[:i]
+			endStr := tok[i+1:]
+			ip := net.ParseIP(strings.TrimSpace(base)).To4()
+			if ip == nil {
+				continue
+			}
+			start := int(ip[3])
+			end, err := strconv.Atoi(strings.TrimSpace(endStr))
+			if err != nil || end < start || end > 255 {
+				continue
+			}
+			for v := start; v <= end; v++ {
+				nip := make(net.IP, 4)
+				copy(nip, ip)
+				nip[3] = byte(v)
+				out = append(out, nip)
+			}
+			continue
+		}
+		if ip := net.ParseIP(tok).To4(); ip != nil {
+			out = append(out, ip)
+		}
+	}
+	return out
 }
 
 // Run broadcasts until ctx is cancelled. It re-resolves the broadcast address

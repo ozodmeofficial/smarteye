@@ -12,11 +12,23 @@ O'RNATISH
 
 ISHLATISH
 ---------
-- Server ishga tushganda boshqaruv paneli brauzerda ochiladi.
+- Server ishga tushganda boshqaruv paneli ALOHIDA OYNADA ochiladi (brauzer emas).
 - Clientlar tarmoqda o'zi topiladi — IP kiritish shart emas.
+- Agar avtomatik topilmasa: yuqoridagi WiFi belgisidagi tugma orqali
+  "IP bo'yicha qidirish" — kompyuter IP manzillarini kiriting (masalan
+  192.168.1.20 yoki 192.168.1.10-40 oralig'i).
 - Kompyuterlarni xonalarga ajrating, tanlang va boshqaring:
   bloklash, xabar, dastur ochish, o'chirish, masofadan ko'rish/boshqarish.
 - Kompyuterni ikki marta bosib, uning ekraniga ulaning va boshqaring.
+
+TOPILMAYAPTIMI?
+---------------
+- O'rnatuvchi Windows Firewall ruxsatlarini avtomatik qo'shadi. Agar portativ
+  (zip) versiyadan foydalansangiz, birinchi ishga tushishda Windows "ruxsat
+  berish" so'rasa — "Allow access" ni bosing (ham Private, ham Public).
+- Server va barcha clientlar bitta WiFi/tarmoqda ekaniga ishonch hosil qiling.
+- Ba'zi WiFi routerlarda "client isolation" yoqilgan bo'ladi — bunda avtomatik
+  topish ishlamaydi; "IP bo'yicha qidirish" dan foydalaning.
 
 PORTATIV REJIM (o'rnatuvchisiz)
 ------------------------------

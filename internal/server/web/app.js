@@ -4,7 +4,7 @@ import { t, setLang, getLang } from "./i18n.js";
 import { icon } from "./icons.js";
 import { setSender, emit } from "./bus.js";
 import {
-  toast, lockDialog, messageDialog, launchDialog, roomDialog, assignDialog, powerMenu, roomMenu, closeMenus,
+  toast, lockDialog, messageDialog, launchDialog, roomDialog, assignDialog, powerMenu, roomMenu, closeMenus, ipSearchDialog,
 } from "./dialogs.js";
 import { openControl } from "./control.js";
 
@@ -343,6 +343,8 @@ function applyStaticIcons() {
   $("#logo").innerHTML = icon("eye");
   $("#searchIcon").innerHTML = icon("search");
   $("#search").placeholder = t("search");
+  $("#ipSearchBtn").innerHTML = icon("wifi");
+  $("#ipSearchBtn").title = t("ip_search_title");
   updateThemeBtn();
 }
 function updateThemeBtn() {
@@ -376,6 +378,7 @@ function wireChrome() {
     setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark"));
   $$("#langSeg button").forEach((b) =>
     b.addEventListener("click", () => setLanguage(b.dataset.lang)));
+  $("#ipSearchBtn").addEventListener("click", () => ipSearchDialog());
   $("#search").addEventListener("input", (e) => { state.search = e.target.value; renderMain(); });
   $("#codeChip").addEventListener("click", () => {
     navigator.clipboard?.writeText((state.info.net_code || "").replace(/\s/g, ""));

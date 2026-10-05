@@ -152,3 +152,19 @@ func run(name string, args ...string) error {
 	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	return cmd.Start()
 }
+
+// EnsureFirewall makes a best-effort attempt to allow this executable through
+// Windows Firewall so LAN discovery works. It succeeds silently when the
+// process is elevated; otherwise it is a no-op (the installer adds the rule
+// with admin rights, which is the reliable path).
+func EnsureFirewall() {
+	exe, err := os.Executable()
+	if err != nil {
+		return
+	}
+	// Add an inbound allow rule for this program on all profiles. Duplicate
+	// rules are harmless; netsh just adds another with the same name.
+	_ = run("netsh", "advfirewall", "firewall", "add", "rule",
+		"name=SmartEYE", "dir=in", "action=allow",
+		"program="+exe, "enable=yes", "profile=any")
+}

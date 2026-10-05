@@ -2,6 +2,10 @@
 export const STRINGS = {
   uz: {
     app_subtitle: "Nazorat markazi",
+    ip_search_title: "IP bo‘yicha qidirish",
+    ip_search_hint: "Avtomatik topilmasa, kompyuter IP manzillarini kiriting",
+    ip_addresses: "IP manzillar (har biri yangi qatordan yoki vergul bilan)",
+    search_btn: "Qidirish",
     online: "Onlayn", offline: "Oflayn", locked: "Bloklangan",
     all_computers: "Barcha kompyuterlar", rooms: "Xonalar", found: "Yangi topilgan",
     new_room: "Yangi xona", search: "Qidirish...",
@@ -38,6 +42,10 @@ export const STRINGS = {
   },
   ru: {
     app_subtitle: "Центр управления",
+    ip_search_title: "Поиск по IP",
+    ip_search_hint: "Если не находится автоматически, введите IP-адреса компьютеров",
+    ip_addresses: "IP-адреса (по одному на строку или через запятую)",
+    search_btn: "Искать",
     online: "В сети", offline: "Не в сети", locked: "Заблокирован",
     all_computers: "Все компьютеры", rooms: "Комнаты", found: "Найденные",
     new_room: "Новая комната", search: "Поиск...",
@@ -69,6 +77,10 @@ export const STRINGS = {
   },
   en: {
     app_subtitle: "Control center",
+    ip_search_title: "Search by IP",
+    ip_search_hint: "If auto-discovery fails, enter the computers' IP addresses",
+    ip_addresses: "IP addresses (one per line or comma-separated)",
+    search_btn: "Search",
     online: "Online", offline: "Offline", locked: "Locked",
     all_computers: "All computers", rooms: "Rooms", found: "Newly found",
     new_room: "New room", search: "Search...",

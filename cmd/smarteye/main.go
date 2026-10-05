@@ -22,6 +22,7 @@ import (
 	"github.com/ozodmeofficial/smarteye/internal/agent"
 	"github.com/ozodmeofficial/smarteye/internal/config"
 	"github.com/ozodmeofficial/smarteye/internal/meta"
+	"github.com/ozodmeofficial/smarteye/internal/osops"
 	"github.com/ozodmeofficial/smarteye/internal/security"
 	"github.com/ozodmeofficial/smarteye/internal/server"
 )
@@ -87,6 +88,10 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
+	// Best-effort: ensure the LAN discovery traffic is allowed through the
+	// firewall (reliable path is the installer's admin rule).
+	osops.EnsureFirewall()
+
 	switch cfg.Role {
 	case config.RoleServer:
 		runServer(ctx, cfg, *noOpen)
@@ -131,25 +136,45 @@ func applyFlags(cfg *config.Config, role, name, code, host, lang string) bool {
 	return changed
 }
 
-func runServer(ctx context.Context, cfg *config.Config, noOpen bool) {
+func runServer(parent context.Context, cfg *config.Config, noOpen bool) {
+	ctx, cancel := context.WithCancel(parent)
+	defer cancel()
+
 	srv, err := server.New(cfg)
 	if err != nil {
 		log.Fatalf("server init: %v", err)
 	}
-	// Start, then open the dashboard once the UI address is known.
+	// The server runs in the background; the main goroutine is reserved for the
+	// native window (which must own the main OS thread on Windows).
 	go func() {
-		// Give Run a moment to bind the UI listener.
-		for i := 0; i < 50 && srv.UIAddr == ""; i++ {
-			sleepMS(20)
+		if err := srv.Run(ctx); err != nil && err != context.Canceled {
+			log.Printf("server stopped: %v", err)
 		}
-		log.Printf("Dashboard: %s   Network code: %s", srv.UIAddr, cfg.NetCode)
-		if !noOpen && srv.UIAddr != "" {
-			openDashboard(srv.UIAddr)
-		}
+		cancel()
 	}()
-	if err := srv.Run(ctx); err != nil && err != context.Canceled {
-		log.Printf("server stopped: %v", err)
+
+	// Wait briefly for the UI listener to bind.
+	for i := 0; i < 100 && srv.UIAddr == ""; i++ {
+		sleepMS(20)
 	}
+	log.Printf("Dashboard: %s   Network code: %s", srv.UIAddr, cfg.NetCode)
+
+	if noOpen || srv.UIAddr == "" {
+		<-ctx.Done()
+		return
+	}
+
+	// Prefer a native application window; closing it exits SmartEYE.
+	if nativeWindow {
+		if runNativeWindow(srv.UIAddr, "SmartEYE") {
+			cancel()
+			return
+		}
+		// WebView2 unavailable — fall back to the default browser.
+		log.Printf("native window unavailable, opening in browser")
+	}
+	openDashboard(srv.UIAddr)
+	<-ctx.Done()
 }
 
 func runClient(ctx context.Context, cfg *config.Config) {

@@ -23,6 +23,9 @@ func Info() SysInfo {
 // ActiveWindow is unavailable off Windows.
 func ActiveWindow() Foreground { return Foreground{App: "", Title: ""} }
 
+// EnsureFirewall is a no-op off Windows.
+func EnsureFirewall() {}
+
 // Battery returns -1 (unknown) off Windows.
 func Battery() int { return -1 }
 

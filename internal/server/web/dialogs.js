@@ -150,6 +150,30 @@ export function assignDialog(targets, rooms) {
   });
 }
 
+// --- Search by IP -----------------------------------------------------------
+export function ipSearchDialog() {
+  const input = el("textarea.textarea", {
+    placeholder: "192.168.1.20\n192.168.1.10-40\n192.168.0.5, 192.168.0.6",
+    style: "min-height:110px;font-family:var(--mono)",
+  });
+  const m = modal({
+    title: t("ip_search_title"),
+    sub: t("ip_search_hint"),
+    body: [field(t("ip_addresses"), input)],
+    actions: [
+      btn(t("cancel"), "ghost", () => m.close()),
+      btn(t("search_btn"), "primary", () => {
+        const ips = input.value.split(/[\s,;]+/).map((s) => s.trim()).filter(Boolean);
+        if (!ips.length) return;
+        send("probe_ip", { ips });
+        toast(t("ip_search_title"), ips.length + " — " + t("toast_sent"), "ok");
+        m.close();
+      }),
+    ],
+  });
+  input.focus();
+}
+
 // --- Power menu (dropdown) ---------------------------------------------------
 export function powerMenu(x, y, targets) {
   closeMenus();

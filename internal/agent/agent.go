@@ -106,7 +106,15 @@ func (a *Agent) locate(ctx context.Context) (string, error) {
 		if !ok {
 			return "", context.DeadlineExceeded
 		}
-		return net.JoinHostPort(found.Beacon.Host, strconv.Itoa(found.Beacon.Port)), nil
+		// Prefer the address the beacon actually arrived from: it is the
+		// server's reachable IP on this subnet. The advertised Host can be
+		// wrong on multi-homed servers (VirtualBox/VMware/Hyper-V adapters),
+		// so it is only a fallback.
+		host := found.Beacon.Host
+		if found.From != nil && found.From.IP != nil && !found.From.IP.IsUnspecified() {
+			host = found.From.IP.String()
+		}
+		return net.JoinHostPort(host, strconv.Itoa(found.Beacon.Port)), nil
 	}
 }
 

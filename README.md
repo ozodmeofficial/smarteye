@@ -26,6 +26,9 @@ Claude uslubidagi panelda birlashtirilgan.
 - 🖥 Bir nechta monitor, ⌨️ Ctrl+Alt+Del, 📋 umumiy clipboard, 📸 skrinshot
 
 **Qulaylik**
+- 🖥 Server paneli alohida ilova oynasida ochiladi (brauzer emas, WebView2)
+- 🔎 Avtomatik topilmasa — **IP bo'yicha qidirish** (yakka IP yoki oraliq)
+- 🛡 O'rnatuvchi Windows Firewall ruxsatlarini avtomatik sozlaydi
 - 🎨 Claude uslubidagi iliq dizayn, kunduzgi/tungi rejim
 - 🌐 3 til: o'zbek, rus, ingliz
 - 🔐 TLS shifrlash + tarmoq kodi orqali juftlash

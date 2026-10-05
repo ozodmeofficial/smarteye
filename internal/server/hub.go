@@ -59,6 +59,10 @@ type Hub struct {
 	viewers map[string]map[*browserConn]struct{}
 
 	store *roomStore
+
+	// probe sends unicast discovery beacons to the given IPs/ranges (the manual
+	// "search by IP" fallback). Set by the server; nil means unsupported.
+	probe func(ips []string)
 }
 
 // NewHub creates an empty hub backed by the given room store.

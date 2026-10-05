@@ -53,6 +53,15 @@ func New(cfg *config.Config) (*Server, error) {
 		hub:      NewHub(newRoomStore(dir)),
 		done:     make(chan struct{}),
 	}
+	// Wire the manual "search by IP" fallback into the hub.
+	s.hub.probe = func(ips []string) {
+		discovery.Probe(s.cfg.DiscoveryPort, ips, discovery.Beacon{
+			ServerName: s.cfg.ServerName,
+			Port:       s.cfg.ListenPort,
+			CodeHash:   s.codeHash,
+			Version:    meta.Version,
+		})
+	}
 	return s, nil
 }
 

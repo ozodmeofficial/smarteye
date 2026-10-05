@@ -50,6 +50,14 @@ Root: HKLM; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; \
   Flags: uninsdeletevalue; Check: IsClient
 
 [Run]
+; Allow SmartEYE through Windows Firewall on every profile. Without this the
+; UDP discovery beacons and the TLS link are blocked, so clients are never
+; found on the LAN. The program rule covers all ports SmartEYE uses.
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""SmartEYE"" dir=in action=allow program=""{app}\smarteye.exe"" enable=yes profile=any"; Flags: runhidden
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""SmartEYE"" dir=out action=allow program=""{app}\smarteye.exe"" enable=yes profile=any"; Flags: runhidden
+; Belt-and-braces: also open the discovery UDP port explicitly.
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall add rule name=""SmartEYE Discovery"" dir=in action=allow protocol=UDP localport=47801 enable=yes profile=any"; Flags: runhidden
+
 ; Apply the chosen configuration right after files are copied.
 Filename: "{app}\smarteye.exe"; Parameters: "{code:SetupArgs}"; Flags: runhidden waituntilterminated
 ; Launch now: the server opens its dashboard; the client starts in background.
@@ -57,6 +65,9 @@ Filename: "{app}\smarteye.exe"; Description: "SmartEYE'ni hoziroq ishga tushiris
   Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
+; Remove the firewall rules.
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""SmartEYE"""; Flags: runhidden; RunOnceId: "DelFwSmartEYE"
+Filename: "{sys}\netsh.exe"; Parameters: "advfirewall firewall delete rule name=""SmartEYE Discovery"""; Flags: runhidden; RunOnceId: "DelFwSmartEYEDisc"
 ; Stop any running instance on uninstall.
 Filename: "{sys}\taskkill.exe"; Parameters: "/F /IM smarteye.exe"; Flags: runhidden; RunOnceId: "KillSmartEYE"
 

@@ -345,6 +345,17 @@ func (h *Hub) handleBrowserMsg(b *browserConn, msg browserMsg) {
 		json.Unmarshal(msg.Payload, &p)
 		h.sendTo(p.Device, protocol.TypeClipboard, protocol.Clipboard{Text: p.Text})
 
+	case "probe_ip":
+		// Manual "search by IP": send unicast discovery beacons to the given
+		// addresses/ranges so clients on a broadcast-isolated LAN still connect.
+		var p struct {
+			IPs []string `json:"ips"`
+		}
+		json.Unmarshal(msg.Payload, &p)
+		if h.probe != nil && len(p.IPs) > 0 {
+			go h.probe(p.IPs)
+		}
+
 	default:
 		log.Printf("server: unknown browser command %q", msg.Type)
 	}
