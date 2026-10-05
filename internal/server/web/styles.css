@@ -141,8 +141,9 @@ button { cursor: pointer; border: none; background: none; }
 .room:hover .mini { opacity: .7; }
 
 .addroom { margin-top: 6px; display: flex; align-items: center; gap: 9px; padding: 9px 12px; border-radius: 10px;
-           color: var(--accent); font-weight: 600; border: 1px dashed var(--border-strong); }
+           color: var(--accent); font-weight: 600; border: 1px dashed var(--border-strong); font-size: 13px; }
 .addroom:hover { background: var(--accent-wash); }
+.addroom svg { width: 17px; height: 17px; flex: none; }
 
 /* Main */
 .main { grid-area: main; overflow-y: auto; padding: 18px 22px 40px; }
