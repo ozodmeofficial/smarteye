@@ -1,1 +1,47 @@
-<!doctype html><title>SmartEYE</title>
+<!doctype html>
+<html lang="uz" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>SmartEYE — Control Center</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="disconnected" id="disc"><span class="spin"></span><span id="discText">Aloqa uzildi...</span></div>
+
+  <div class="app">
+    <div class="brand">
+      <div class="logo" id="logo"></div>
+      <h1>Smart<span>EYE</span></h1>
+    </div>
+
+    <header class="topbar">
+      <div class="server-name" id="serverName">SmartEYE</div>
+      <div class="chip"><span class="dot"></span><span id="onlineCount">0</span>&nbsp;/&nbsp;<span id="totalCount">0</span></div>
+      <div class="chip" id="codeChip" title="Network code">🔑 <b id="netCode">— — —</b></div>
+      <div class="spacer"></div>
+      <div class="search" id="searchBox">
+        <span id="searchIcon"></span>
+        <input id="search" type="text" placeholder="Qidirish..." />
+      </div>
+      <div class="seg" id="langSeg">
+        <button data-lang="uz" class="active">UZ</button>
+        <button data-lang="ru">RU</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <button class="iconbtn" id="themeBtn" title="Theme"></button>
+    </header>
+
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <main class="main" id="main"></main>
+  </div>
+
+  <div class="toasts" id="toasts"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
