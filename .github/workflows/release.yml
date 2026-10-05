@@ -1,0 +1,72 @@
+name: Release
+
+# Build the Windows executable and the role-selecting installer, then publish
+# them as a GitHub Release whenever a v* tag is pushed.
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version (e.g. 1.0.0)"
+        required: true
+        default: "1.0.0"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26"
+          cache: true
+
+      - name: Resolve version
+        id: ver
+        shell: bash
+        run: |
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            V="${GITHUB_REF_NAME#v}"
+          else
+            V="${{ github.event.inputs.version }}"
+          fi
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+
+      - name: Build smarteye.exe (GUI, no console)
+        shell: bash
+        run: |
+          mkdir -p dist
+          LDFLAGS="-s -w -H=windowsgui -X github.com/ozodmeofficial/smarteye/internal/meta.Version=${{ steps.ver.outputs.version }}"
+          GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags "$LDFLAGS" -o dist/smarteye.exe ./cmd/smarteye
+          cp docs/README-release.txt dist/README.txt || cp README.md dist/README.txt
+
+      - name: Build installer (Inno Setup)
+        shell: pwsh
+        run: |
+          choco install innosetup --no-progress -y
+          Copy-Item dist\smarteye.exe build\installer\smarteye.exe
+          Copy-Item dist\README.txt build\installer\README.txt -ErrorAction SilentlyContinue
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DAppVersion=${{ steps.ver.outputs.version }} build\installer\smarteye.iss
+          Copy-Item build\installer\Output\*.exe dist\ -ErrorAction SilentlyContinue
+          Copy-Item build\installer\*.exe dist\ -ErrorAction SilentlyContinue
+
+      - name: Package portable zip
+        shell: pwsh
+        run: |
+          Compress-Archive -Path dist\smarteye.exe,dist\README.txt -DestinationPath dist\SmartEYE-${{ steps.ver.outputs.version }}-portable.zip -Force
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: SmartEYE ${{ steps.ver.outputs.version }}
+          files: |
+            dist/SmartEYE-Setup-*.exe
+            dist/SmartEYE-*-portable.zip
+            dist/smarteye.exe
+          generate_release_notes: true

@@ -104,15 +104,15 @@ func newSelfSigned() (tls.Certificate, []byte, []byte, error) {
 		return tls.Certificate{}, nil, nil, err
 	}
 	tmpl := x509.Certificate{
-		SerialNumber: serial,
-		Subject:      pkix.Name{CommonName: "SmartEYE Server", Organization: []string{"SmartEYE"}},
-		NotBefore:    time.Now().Add(-time.Hour),
-		NotAfter:     time.Now().AddDate(5, 0, 0),
-		KeyUsage:     x509.KeyUsageDigitalSignature | x509.KeyUsageKeyEncipherment,
-		ExtKeyUsage:  []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
-		DNSNames:     []string{"localhost", "smarteye.local"},
-		IPAddresses:  localIPs(),
-		IsCA:         false,
+		SerialNumber:          serial,
+		Subject:               pkix.Name{CommonName: "SmartEYE Server", Organization: []string{"SmartEYE"}},
+		NotBefore:             time.Now().Add(-time.Hour),
+		NotAfter:              time.Now().AddDate(5, 0, 0),
+		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageKeyEncipherment,
+		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
+		DNSNames:              []string{"localhost", "smarteye.local"},
+		IPAddresses:           localIPs(),
+		IsCA:                  false,
 		BasicConstraintsValid: true,
 	}
 	der, err := x509.CreateCertificate(rand.Reader, &tmpl, &tmpl, &priv.PublicKey, priv)

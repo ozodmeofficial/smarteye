@@ -176,7 +176,9 @@ func (h *Hub) handleBrowserMsg(b *browserConn, msg browserMsg) {
 
 	// --- rooms ---
 	case "create_room":
-		var p struct{ Name string `json:"name"` }
+		var p struct {
+			Name string `json:"name"`
+		}
 		json.Unmarshal(msg.Payload, &p)
 		h.mu.Lock()
 		id := uuid.NewString()
@@ -200,7 +202,9 @@ func (h *Hub) handleBrowserMsg(b *browserConn, msg browserMsg) {
 		h.broadcastState()
 
 	case "delete_room":
-		var p struct{ ID string `json:"id"` }
+		var p struct {
+			ID string `json:"id"`
+		}
 		json.Unmarshal(msg.Payload, &p)
 		h.mu.Lock()
 		delete(h.rooms, p.ID)
@@ -248,7 +252,9 @@ func (h *Hub) handleBrowserMsg(b *browserConn, msg browserMsg) {
 		h.sendToMany(p.Targets, protocol.TypeLock, protocol.Lock{Title: p.Title, Message: p.Message})
 
 	case "unlock":
-		var p struct{ Targets []string `json:"targets"` }
+		var p struct {
+			Targets []string `json:"targets"`
+		}
 		json.Unmarshal(msg.Payload, &p)
 		h.sendToMany(p.Targets, protocol.TypeUnlock, nil)
 
@@ -298,7 +304,9 @@ func (h *Hub) handleBrowserMsg(b *browserConn, msg browserMsg) {
 		h.startView(b, p.Device, p.Monitor, p.FPS, p.Quality)
 
 	case "view_stop":
-		var p struct{ Device string `json:"device"` }
+		var p struct {
+			Device string `json:"device"`
+		}
 		json.Unmarshal(msg.Payload, &p)
 		h.stopView(b, p.Device)
 
@@ -323,8 +331,8 @@ func (h *Hub) handleBrowserMsg(b *browserConn, msg browserMsg) {
 
 	case "input":
 		var p struct {
-			Device string                `json:"device"`
-			Event  protocol.InputEvent   `json:"event"`
+			Device string              `json:"device"`
+			Event  protocol.InputEvent `json:"event"`
 		}
 		json.Unmarshal(msg.Payload, &p)
 		h.sendTo(p.Device, protocol.TypeInputEvent, p.Event)

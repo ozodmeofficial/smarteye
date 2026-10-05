@@ -86,7 +86,7 @@ type Listener struct {
 // Found is a beacon together with the source address it arrived from.
 type Found struct {
 	Beacon Beacon
-	From    *net.UDPAddr
+	From   *net.UDPAddr
 }
 
 // Listen delivers matching beacons to the returned channel until ctx is

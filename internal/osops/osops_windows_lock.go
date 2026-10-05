@@ -46,8 +46,8 @@ const (
 	wsPopup   = 0x80000000
 	wsVisible = 0x10000000
 
-	wsExTopmost     = 0x00000008
-	wsExToolWindow  = 0x00000080
+	wsExTopmost    = 0x00000008
+	wsExToolWindow = 0x00000080
 
 	swShow = 5
 
@@ -62,10 +62,10 @@ const (
 	swpShow     = 0x0040
 	hwndTopmost = ^uintptr(0) // (HWND)-1
 
-	dtCenter   = 0x0001
-	dtVCenter  = 0x0004
-	dtWordBrk  = 0x0010
-	dtNoClip   = 0x0100
+	dtCenter  = 0x0001
+	dtVCenter = 0x0004
+	dtWordBrk = 0x0010
+	dtNoClip  = 0x0100
 
 	transparent = 1
 
@@ -116,12 +116,12 @@ type rectL struct{ Left, Top, Right, Bottom int32 }
 
 // winLocker drives a single fullscreen overlay window on a dedicated OS thread.
 type winLocker struct {
-	mu       sync.Mutex
-	hwnd     windows.Handle
-	locked   bool
-	title    string
-	message  string
-	classReg bool
+	mu        sync.Mutex
+	hwnd      windows.Handle
+	locked    bool
+	title     string
+	message   string
+	classReg  bool
 	className *uint16
 }
 

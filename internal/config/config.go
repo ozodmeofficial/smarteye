@@ -25,9 +25,9 @@ const (
 // Config is the on-disk configuration, shared by both roles.
 type Config struct {
 	Role       Role   `json:"role"`
-	DeviceID   string `json:"device_id"`    // stable unique id for this machine
-	ServerName string `json:"server_name"`  // display name (server role)
-	NetCode    string `json:"net_code"`     // pairing code shared across the fleet
+	DeviceID   string `json:"device_id"`   // stable unique id for this machine
+	ServerName string `json:"server_name"` // display name (server role)
+	NetCode    string `json:"net_code"`    // pairing code shared across the fleet
 
 	// Client-only hints.
 	ServerHost string `json:"server_host"` // optional manual server address (fallback)
@@ -41,7 +41,7 @@ type Config struct {
 	ListenPort    int `json:"listen_port"`    // TLS WebSocket port (server)
 	DiscoveryPort int `json:"discovery_port"` // UDP discovery port
 
-	path string `json:"-"`
+	path string     `json:"-"`
 	mu   sync.Mutex `json:"-"`
 }
 

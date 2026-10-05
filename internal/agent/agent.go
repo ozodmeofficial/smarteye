@@ -29,9 +29,9 @@ type Agent struct {
 	cfg      *config.Config
 	codeHash string
 
-	cap      screen.Capturer
-	inj      control.Injector
-	locker   osops.Locker
+	cap    screen.Capturer
+	inj    control.Injector
+	locker osops.Locker
 
 	// Per-connection state, reset on each (re)connect.
 	conn     *protocol.Conn

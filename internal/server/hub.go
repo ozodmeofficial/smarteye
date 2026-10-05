@@ -21,12 +21,12 @@ type Device struct {
 	Addr       string `json:"addr"`
 	Room       string `json:"room"`
 
-	Online          bool      `json:"online"`
-	LastSeen        time.Time `json:"last_seen"`
-	ForegroundApp   string    `json:"foreground_app"`
-	ForegroundTitle string    `json:"foreground_title"`
-	Locked          bool      `json:"locked"`
-	Battery         int       `json:"battery"`
+	Online          bool                   `json:"online"`
+	LastSeen        time.Time              `json:"last_seen"`
+	ForegroundApp   string                 `json:"foreground_app"`
+	ForegroundTitle string                 `json:"foreground_title"`
+	Locked          bool                   `json:"locked"`
+	Battery         int                    `json:"battery"`
 	Monitors        []protocol.MonitorInfo `json:"monitors"`
 
 	// Latency to the device, measured from pings, in milliseconds.

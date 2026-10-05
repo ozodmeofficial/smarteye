@@ -19,11 +19,11 @@ var (
 	user32   = windows.NewLazySystemDLL("user32.dll")
 	kernel32 = windows.NewLazySystemDLL("kernel32.dll")
 
-	procGetForegroundWindow     = user32.NewProc("GetForegroundWindow")
-	procGetWindowTextW          = user32.NewProc("GetWindowTextW")
+	procGetForegroundWindow      = user32.NewProc("GetForegroundWindow")
+	procGetWindowTextW           = user32.NewProc("GetWindowTextW")
 	procGetWindowThreadProcessId = user32.NewProc("GetWindowThreadProcessId")
-	procMessageBoxW             = user32.NewProc("MessageBoxW")
-	procGetSystemPowerStatus    = kernel32.NewProc("GetSystemPowerStatus")
+	procMessageBoxW              = user32.NewProc("MessageBoxW")
+	procGetSystemPowerStatus     = kernel32.NewProc("GetSystemPowerStatus")
 )
 
 // Info reports hostname, logged-in user and a friendly Windows product name.

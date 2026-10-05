@@ -17,16 +17,16 @@ type streamer struct {
 	cap  screen.Capturer
 	send func(*protocol.Envelope) error
 
-	mu          sync.Mutex
-	monitor     int
-	thumbOn     bool
-	thumbFPS    int
-	thumbW      int
-	thumbQ      int
-	streamOn    bool
-	streamFPS   int
-	streamQ     int
-	seq         uint64
+	mu        sync.Mutex
+	monitor   int
+	thumbOn   bool
+	thumbFPS  int
+	thumbW    int
+	thumbQ    int
+	streamOn  bool
+	streamFPS int
+	streamQ   int
+	seq       uint64
 
 	wake chan struct{}
 }

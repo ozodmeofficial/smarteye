@@ -42,23 +42,23 @@ type ClientUpdate struct {
 
 // ThumbRequest toggles the low-frequency preview used for the grid tiles.
 type ThumbRequest struct {
-	Enabled   bool `json:"enabled"`
-	FPS       int  `json:"fps"`        // frames per second (1-2 typical)
-	MaxWidth  int  `json:"max_width"`  // downscale target, e.g. 320
-	Quality   int  `json:"quality"`    // JPEG quality 1-100
+	Enabled  bool `json:"enabled"`
+	FPS      int  `json:"fps"`       // frames per second (1-2 typical)
+	MaxWidth int  `json:"max_width"` // downscale target, e.g. 320
+	Quality  int  `json:"quality"`   // JPEG quality 1-100
 }
 
 // Frame carries an encoded image. Used by thumb, stream and demo frames.
 type Frame struct {
-	Monitor int    `json:"monitor"`  // which display this frame is from
+	Monitor int    `json:"monitor"` // which display this frame is from
 	Width   int    `json:"width"`
 	Height  int    `json:"height"`
-	Format  string `json:"format"`   // "jpeg" or "webp"
-	Full    bool   `json:"full"`     // true = full frame, false = dirty-rect delta
-	X       int    `json:"x"`        // delta position (when Full is false)
+	Format  string `json:"format"` // "jpeg" or "webp"
+	Full    bool   `json:"full"`   // true = full frame, false = dirty-rect delta
+	X       int    `json:"x"`      // delta position (when Full is false)
 	Y       int    `json:"y"`
-	Data    string `json:"data"`     // base64-encoded image bytes
-	Seq     uint64 `json:"seq"`      // monotonically increasing per stream
+	Data    string `json:"data"` // base64-encoded image bytes
+	Seq     uint64 `json:"seq"`  // monotonically increasing per stream
 }
 
 // StreamStart asks the client to begin a full-quality stream of a monitor.
@@ -79,14 +79,14 @@ type ControlMode struct {
 
 // InputEvent is a single mouse or keyboard action to replay on the client.
 type InputEvent struct {
-	Kind    string  `json:"kind"`    // "mouse_move","mouse_down","mouse_up","wheel","key_down","key_up"
-	X       float64 `json:"x"`       // normalized 0..1 coordinates (resolution independent)
+	Kind    string  `json:"kind"` // "mouse_move","mouse_down","mouse_up","wheel","key_down","key_up"
+	X       float64 `json:"x"`    // normalized 0..1 coordinates (resolution independent)
 	Y       float64 `json:"y"`
-	Button  string  `json:"button"`  // "left","right","middle"
-	Delta   int     `json:"delta"`   // wheel delta
-	KeyCode int     `json:"key_code"`// virtual key code
-	Key     string  `json:"key"`     // human key name, for logging
-	Mods    uint8   `json:"mods"`    // bitmask: 1=ctrl 2=alt 4=shift 8=win
+	Button  string  `json:"button"`   // "left","right","middle"
+	Delta   int     `json:"delta"`    // wheel delta
+	KeyCode int     `json:"key_code"` // virtual key code
+	Key     string  `json:"key"`      // human key name, for logging
+	Mods    uint8   `json:"mods"`     // bitmask: 1=ctrl 2=alt 4=shift 8=win
 }
 
 // Clipboard carries shared clipboard text between peers.

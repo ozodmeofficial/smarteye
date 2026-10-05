@@ -12,15 +12,15 @@ import (
 )
 
 var (
-	user32   = windows.NewLazySystemDLL("user32.dll")
-	gdi32    = windows.NewLazySystemDLL("gdi32.dll")
+	user32 = windows.NewLazySystemDLL("user32.dll")
+	gdi32  = windows.NewLazySystemDLL("gdi32.dll")
 
-	procGetDC                 = user32.NewProc("GetDC")
-	procReleaseDC             = user32.NewProc("ReleaseDC")
-	procGetSystemMetrics      = user32.NewProc("GetSystemMetrics")
-	procEnumDisplayMonitors   = user32.NewProc("EnumDisplayMonitors")
-	procGetMonitorInfoW       = user32.NewProc("GetMonitorInfoW")
-	procSetProcessDPIAware    = user32.NewProc("SetProcessDPIAware")
+	procGetDC               = user32.NewProc("GetDC")
+	procReleaseDC           = user32.NewProc("ReleaseDC")
+	procGetSystemMetrics    = user32.NewProc("GetSystemMetrics")
+	procEnumDisplayMonitors = user32.NewProc("EnumDisplayMonitors")
+	procGetMonitorInfoW     = user32.NewProc("GetMonitorInfoW")
+	procSetProcessDPIAware  = user32.NewProc("SetProcessDPIAware")
 
 	procCreateCompatibleDC     = gdi32.NewProc("CreateCompatibleDC")
 	procCreateCompatibleBitmap = gdi32.NewProc("CreateCompatibleBitmap")

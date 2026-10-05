@@ -37,11 +37,11 @@ const (
 	TypeStreamFrame  MessageType = "stream_frame"  // client -> server, a full-quality frame
 
 	// --- Remote control (AnyDesk-style) ------------------------------------
-	TypeControlMode  MessageType = "control_mode"  // server -> client, view-only vs control
-	TypeInputEvent   MessageType = "input_event"   // server -> client, mouse/keyboard event
-	TypeClipboard    MessageType = "clipboard"     // either direction, shared clipboard text
-	TypeMonitorList  MessageType = "monitor_list"  // client -> server, available displays
-	TypeSelectMon    MessageType = "select_monitor"// server -> client, choose a display
+	TypeControlMode MessageType = "control_mode"   // server -> client, view-only vs control
+	TypeInputEvent  MessageType = "input_event"    // server -> client, mouse/keyboard event
+	TypeClipboard   MessageType = "clipboard"      // either direction, shared clipboard text
+	TypeMonitorList MessageType = "monitor_list"   // client -> server, available displays
+	TypeSelectMon   MessageType = "select_monitor" // server -> client, choose a display
 
 	// --- Supervision (Veyon-style) -----------------------------------------
 	TypeLock      MessageType = "lock"       // server -> client, show lock screen
@@ -66,7 +66,7 @@ const (
 // Envelope is the outer frame for every message on the wire.
 type Envelope struct {
 	Type    MessageType     `json:"type"`
-	ID      string          `json:"id,omitempty"`   // optional correlation id
+	ID      string          `json:"id,omitempty"` // optional correlation id
 	Payload json.RawMessage `json:"payload,omitempty"`
 	Sent    int64           `json:"sent"` // unix millis, for latency measurement
 }
