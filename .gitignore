@@ -1,0 +1,33 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/bin/
+/dist/
+smarteye
+smarteye-*
+
+# Go
+*.test
+*.out
+vendor/
+
+# Node
+node_modules/
+frontend/dist/
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+
+# Local runtime data
+*.db
+data/
+config.local.json
+certs/
