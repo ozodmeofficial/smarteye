@@ -65,8 +65,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: SmartEYE ${{ steps.ver.outputs.version }}
+          tag_name: v${{ steps.ver.outputs.version }}
           files: |
             dist/SmartEYE-Setup-*.exe
             dist/SmartEYE-*-portable.zip
             dist/smarteye.exe
           generate_release_notes: true
+          make_latest: true
