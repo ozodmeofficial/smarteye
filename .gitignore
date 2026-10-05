@@ -6,8 +6,10 @@
 *.dylib
 /bin/
 /dist/
-smarteye
-smarteye-*
+# Built binaries at repo root only (do not match the cmd/smarteye source dir).
+/smarteye
+/smarteye.exe
+/smarteye-*
 
 # Go
 *.test
