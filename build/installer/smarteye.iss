@@ -87,7 +87,6 @@ end;
 
 procedure InitializeWizard;
 begin
-  Randomize;
   GeneratedCode := MakeCode;
 
   RolePage := CreateInputOptionPage(wpSelectDir,
@@ -114,16 +113,11 @@ begin
   begin
     if IsServer then
     begin
-      CodePage.Values[0] := GeneratedCode;
-      CodePage.SubCaptionLabel.Caption :=
-        'Bu server uchun kod: ' + GeneratedCode + '. Uni yozib oling — clientlarga shu kod kerak bo''ladi.';
+      if Trim(CodePage.Values[0]) = '' then
+        CodePage.Values[0] := GeneratedCode;
     end
     else
-    begin
       CodePage.Values[0] := '';
-      CodePage.SubCaptionLabel.Caption :=
-        'Serverda ko''rsatilgan tarmoq kodini kiriting.';
-    end;
   end;
 end;
 
